@@ -1,0 +1,94 @@
+.containerPomodoro {
+    width: 65%;
+    background-color: #f1f1f1;
+}
+
+.content {
+    margin: 50px;
+}
+
+.btnInicio {
+    background-color: #4F63D7;
+    width: 175px;
+    height: 46px;
+    border-radius: 50px;
+    border-color: transparent;
+    color: #fff;
+    font-size: 19px;
+    font-family: 'Roboto';
+    font-weight: lighter;
+    margin-top: 25px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+}
+
+.bodyPomodoro {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.BarraTitle {
+    height: 35px;
+    width: 5px;
+    background-color: #4F63D7;
+}
+
+.TitleRow {
+    display: flex;
+    flex-direction: row;
+}
+
+.TitlePomodoro {
+    margin-left: 15px;
+    font-size: 27px;
+    color: #4F63D7;
+}
+
+.infoPomodoro {
+    margin-left: 50px;
+    margin-top: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.notification {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    font-size: 19px;
+    color: #4F63D7;
+    align-items: center;
+}
+
+.circle {
+    height: 300px;
+    width: 300px;
+    background-color: #4F63D7;
+    /* background-image: linear-gradient(to bottom, #4F63D7, rgb(114, 64, 170)); */
+    /* background-image: url('../../assets/waves.png'); */
+    background-position: center;
+    background-repeat: repeat;
+    border-radius: 100%;
+    text-align: center;
+}
+
+.timerText {
+    font-size: 40px;
+    font-weight: bold;
+    color: #fff;
+    line-height: 300px;
+}
+
+.statusText {
+    margin-top: -40px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #cad3ff;
+}
