@@ -1,18 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import './styles.css';
+import { useSelector, useDispatch } from 'react-redux';
 import { FiTrash2 } from 'react-icons/fi';
 
 export default function Todo() {
+  const title = useSelector(state => state.taskselect);
   const [list, setList] = useState([]);
-  const [arrayCheck, setArrayCheck] = useState([]);
+  const [countChangeChecked, setCountChangeChecked] = useState(0);
   const [task, setTask] = useState('');
-  const [complete, setComplete] = useState(false);
+  const [complete] = useState(false);
+  const dispatch = useDispatch();
 
-  function postTask(e) {
-    e.preventDefault();
+  function loadList() {
+    const local = localStorage.getItem('todos');
+    if (local != null) {
+      setList(JSON.parse(local));
+    }
+  }
+
+  function postTask() {
     localStorage.setItem('todos', JSON.stringify([...list, { task, complete }]));
     setList([...list, { task, complete }]);
     setTask('');
+  }
+
+  function deleteTask(index) {
+    const array = list;
+    array.splice(index, 1);
+    localStorage.clear();
+    localStorage.setItem('todos', JSON.stringify(array));
+    loadList();
+  }
+
+  function ischecked(index, newValue) {
+    const array = list;
+    array[index].complete = newValue;
+    localStorage.setItem('todos', JSON.stringify(array));
+    setCountChangeChecked(countChangeChecked => countChangeChecked + 1);
   }
 
   function isComplete(index) {
@@ -23,41 +47,30 @@ export default function Todo() {
     }
   }
 
-  function deleteTask(index) {
-    const local = localStorage.getItem('todos');
-    const array = list;
-    array.splice(index, 1);
-    localStorage.clear();
-    localStorage.setItem('todos', JSON.stringify(array));
-    loadList();
-  }
-
-  function loadList() {
-    const local = localStorage.getItem('todos');
-    if (local != null) {
-      setList(JSON.parse(local));
+  function OnChangeColor(item) {
+    if (item.task === title) {
+      return { backgroundColor: 'rgb(53, 53, 53)' };
+    }
+    else {
+      return { backgroundColor: 'transparent' };
     }
   }
 
-  function ischecked(index, value) {
-    const array = list;
-    for (var i = 0; i < array.length; i++) {
-      if (array[index]) {
-        array[index].complete = value;
-        setArrayCheck(array);
-        localStorage.setItem('todos', JSON.stringify(array));
-        break;
-      }
-    }
-  }
-
-  function cleanAll(){
+  function cleanAll() {
     localStorage.clear();
     setList([]);
   }
+
+  function toggleTask(taskselect) {
+    return {
+      type: 'TOGGLE_TASK',
+      taskselect
+    }
+  }
+
   useEffect(() => {
     loadList();
-  }, [arrayCheck]);
+  }, [countChangeChecked]);
 
   return (
     <div className="containerTodo">
@@ -65,16 +78,21 @@ export default function Todo() {
         <h3 className="title">Lista ToDo</h3>
         <div className="todo">
           <input value={task} onChange={(e) => setTask(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' ? postTask(e) : null}
+            onKeyPress={(e) => e.key === 'Enter' ? postTask() : null}
             type="text" placeholder="Adicione uma tarefa..." />
           <ul>
             {list.map((item, index) =>
               <li key={index}>
-                <div className="card">
+                <div className="card"
+                  style={OnChangeColor(item)}
+                  onClick={(e) => {
+                    dispatch(toggleTask(item.task));
+                  }}>
                   <div className="contentCard">
                     <div className="row">
 
-                      <label className="container" style={isComplete(index)}>{item.task}
+                      <label className="container" style={isComplete(index)}>
+                        <label>{item.task}</label>
                         <input type="checkbox" checked={list[index].complete} onChange={(e) => ischecked(index, e.target.checked)} />
                         <span className="checkmark"></span>
                       </label>

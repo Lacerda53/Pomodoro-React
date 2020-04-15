@@ -89,10 +89,6 @@ li {
     user-select: none;
 }
 
-.container:checked {
-    text-decoration: line-through;
-}
-
 .container input {
     position: absolute;
     align-items: center;

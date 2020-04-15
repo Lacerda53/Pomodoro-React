@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react';
 import './styles.css';
 import { FiPlay, FiPause, FiBell } from 'react-icons/fi';
 import Switch from "react-switch";
+import { useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
 
-export default function Pomodoro(props) {
+export default function Pomodoro() {
+  const task = useSelector(state=> state.taskselect);
   const [counter, setCounter] = useState(0);
   const [workTime] = useState(1500);
   const [restTime, setRestTime] = useState(300);
   const [status, setStatus] = useState('Foco');
+  const [title, setTitle] = useState('Selecione uma tarefa');
   const [pomodoro, setPomodoro] = useState(0);
   const [notification, setNotification] = useState(true);
   const [intervalId, setIntervalId] = useState();
@@ -63,10 +66,24 @@ export default function Pomodoro(props) {
     }
   }
 
+  function checkTaskSelect(){
+    if(Object.keys(task).length !== 0)
+    {
+      setTitle(task);
+    }
+  }
+
   useEffect(() => {
     zeroTimer();
     onChangeTitle();
-  }, [counter]);
+    checkTaskSelect();
+    if (status === "Foco") {
+      console.log(convertSeconds(workTime - counter));
+    }
+    else {
+      console.log(convertSeconds(restTime - counter));
+    }
+  }, [counter, task]);
 
   function convertSeconds(s) {
     var min = Math.floor(s / 60);
@@ -97,7 +114,7 @@ export default function Pomodoro(props) {
           <div className="infoPomodoro">
             <div className="TitleRow">
               <div className="BarraTitle"></div>
-              <h2 className="TitlePomodoro">{props.title}</h2>
+              <h2 className="TitlePomodoro">{title}</h2>
             </div>
             <div className="notification">
               <FiBell /> Notificações
